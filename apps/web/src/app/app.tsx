@@ -40,7 +40,6 @@ export function App() {
     <Container>
       <Card
         style={{
-          backgroundColor: 'cornflowerblue',
           marginTop: '20vh',
         }}
       >
