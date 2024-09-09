@@ -1,16 +1,20 @@
-import { useEffect, useState } from 'react';
-import { Button, Card, Container, Stack, Typography } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  Button,
+  Card,
+  Container,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { ISegments } from 'spin-wheel-game';
 
 import { suraList as localSuraList } from './data';
+import { SpinWheel } from './components';
+import { generateRandomColor, generateSura } from './utils';
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbye-vQ7rkXjBPc5I8yhQo9HQcwBnBDtIC9Wch6mortUj78RwINFQbdY2dJkQAiH9aoIkA/exec';
-
-function generateSura(suraList: string[]) {
-  if (suraList.length < 1) return 'No sura found';
-  const randomIndex = Math.floor(Math.random() * suraList.length - 1);
-  return suraList[randomIndex];
-}
 
 type Sura = {
   id: number;
@@ -19,11 +23,11 @@ type Sura = {
 
 export function App() {
   const [selectedSura, setSelectedSura] = useState<string | null>(null);
-  const [suraList, setSuraList] = useState(localSuraList);
+  const [suraList, setSuraList] = useState<ISegments[] | null>(null);
 
   const handleGenerateSuraClick = () => {
-    const sura = generateSura(suraList);
-    setSelectedSura(sura);
+    // const sura = generateSura(suraList);
+    // setSelectedSura(sura);
   };
 
   useEffect(() => {
@@ -31,29 +35,31 @@ export function App() {
       .then((res) => res.json())
       .then(([res]) => {
         const { data }: { data: Sura[] } = res;
-        const suraList = data.map((sura) => sura.suraList);
+        const suraList = data.map((sura) => ({
+          segmentText: sura.suraList,
+          segColor: generateRandomColor(),
+        }));
         setSuraList(suraList);
       });
-  }, []);
+  }, [suraList]);
 
   return (
     <Container>
       <Card
         style={{
-          marginTop: '20vh',
+          marginTop: '15vh',
         }}
       >
-        <Stack gap={4} padding={4} alignItems={'center'}>
-          <Stack gap={2} alignItems={'center'}>
-            <Typography variant="h3">Sura Generator</Typography>
-            {selectedSura ? (
-              <Typography variant="body1">{selectedSura}</Typography>
+        <Stack gap={2} padding={2} alignItems={'center'}>
+          <Stack gap={2} padding={2} alignItems={'center'}>
+            {suraList ? (
+              <SpinWheel options={suraList} />
             ) : (
-              <Typography variant="body1">Click to generate sura</Typography>
+              <Skeleton variant="circular" width={'100%'} height={600} />
             )}
           </Stack>
           <Button fullWidth onClick={handleGenerateSuraClick}>
-            Generate
+            Spin the wheel
           </Button>
         </Stack>
       </Card>

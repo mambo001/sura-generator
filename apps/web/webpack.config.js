@@ -16,6 +16,7 @@ module.exports = {
       main: './src/main.tsx',
       index: './src/index.html',
       baseHref: '/sura-generator/',
+      // baseHref: '/',
       assets: ['./src/favicon.ico', './src/assets'],
       styles: ['./src/styles.css'],
       outputHashing: process.env['NODE_ENV'] === 'production' ? 'all' : 'none',
