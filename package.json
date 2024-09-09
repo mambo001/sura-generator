@@ -55,6 +55,11 @@
   },
   "nx": {},
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fontsource/roboto": "^5.0.15",
+    "@mui/icons-material": "^6.0.2",
+    "@mui/material": "^6.0.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "tslib": "^2.3.0"
