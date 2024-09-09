@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  Box,
   Button,
   Card,
   Container,
@@ -24,13 +25,13 @@ type Sura = {
 export function App() {
   const [selectedSura, setSelectedSura] = useState<string | null>(null);
   const [suraList, setSuraList] = useState<ISegments[] | null>(null);
-
+  const spinWheelRef = useRef(null);
   const handleGenerateSuraClick = () => {
     // const sura = generateSura(suraList);
     // setSelectedSura(sura);
   };
 
-  useEffect(() => {
+  const callback = useCallback(() => {
     fetch(API_URL)
       .then((res) => res.json())
       .then(([res]) => {
@@ -41,7 +42,26 @@ export function App() {
         }));
         setSuraList(suraList);
       });
+  }, []);
+
+  useEffect(() => {
+    callback();
+  }, [callback]);
+
+  useEffect(() => {
+    if (!spinWheelRef.current) return;
+    const spinWheel: HTMLDivElement = spinWheelRef.current;
+    const wheel = spinWheel.querySelector('#wheel');
+    const canvas = spinWheel.querySelector('#canvas');
   }, [suraList]);
+
+  function handleSpinClick() {
+    if (!spinWheelRef.current) return;
+    const spinWheel: HTMLDivElement = spinWheelRef.current;
+    const canvas = spinWheel.querySelector('#canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    canvas.click();
+  }
 
   return (
     <Container>
@@ -50,18 +70,38 @@ export function App() {
           marginTop: '15vh',
         }}
       >
-        <Stack gap={2} padding={2} alignItems={'center'}>
+        {suraList && suraList.length > 0 ? (
           <Stack gap={2} padding={2} alignItems={'center'}>
-            {suraList ? (
-              <SpinWheel options={suraList} />
-            ) : (
-              <Skeleton variant="circular" width={'100%'} height={600} />
-            )}
+            <Stack gap={2} padding={2} alignItems={'center'}>
+              <Box ref={spinWheelRef}>
+                <SpinWheel options={suraList} />
+              </Box>
+            </Stack>
+            <Button
+              disabled={!suraList || suraList.length < 1}
+              fullWidth
+              onClick={handleSpinClick}
+            >
+              Spin the wheel
+            </Button>
           </Stack>
-          <Button fullWidth onClick={handleGenerateSuraClick}>
-            Spin the wheel
-          </Button>
-        </Stack>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              flex: 1,
+              // height: 300,
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 2,
+              gap: 4,
+              flexDirection: 'column',
+            }}
+          >
+            <Skeleton variant="circular" width={300} height={300} />
+            <Skeleton variant="rectangular" width={300} height={40} />
+          </Box>
+        )}
       </Card>
     </Container>
   );
