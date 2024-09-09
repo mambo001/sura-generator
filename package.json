@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nx serve web",
+    "build": "nx build web",
     "deploy:gh-pages": "git subtree push --prefix dist/apps/web origin gh-pages"
   },
   "keywords": [],
@@ -63,6 +64,7 @@
     "@mui/material": "^6.0.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "spin-wheel-game": "^1.0.3-alpha.3",
     "tslib": "^2.3.0"
   }
 }
