@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nx serve web",
     "build": "nx build web",
-    "deploy:gh-pages": "git subtree push --prefix dist/apps/web origin gh-pages"
+    "deploy:gh-pages": "git subtree push --prefix dist/apps/web origin gh-pages",
+    "deploy": "npm run build && npm run deploy:gh-pages"
   },
   "keywords": [],
   "author": "",
