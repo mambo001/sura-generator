@@ -77,37 +77,35 @@ export default function App() {
     }, 1100);
     setTimeout(() => {
       sound.rate(0.75);
-      sound.volume(0.6);
+      sound.volume(0.8);
     }, 1300);
     setTimeout(() => {
       sound.rate(0.85);
-      sound.volume(0.7);
+      sound.volume(1.1);
     }, 1500);
     setTimeout(() => {
       sound.rate(0.95);
-      sound.volume(0.8);
+      sound.volume(1.4);
     }, 1700);
     setTimeout(() => {
       sound.rate(1);
-      sound.volume(1.05);
+      sound.volume(1.5);
     }, 1800);
     setTimeout(() => {
       sound.rate(1.2);
-      sound.volume(1);
+      sound.volume(1.6);
     }, 1900);
     setTimeout(() => {
       sound.rate(1.4);
-      sound.volume(1.2);
+      sound.volume(1.8);
     }, 2500);
     setTimeout(() => {
       sound.rate(1.6);
-      sound.volume(1.4);
+      sound.volume(2);
     }, 3000);
     setTimeout(() => {
-      // sound.stop();
-      // sound.play('start');
       sound.rate(1.8);
-      sound.volume(1.6);
+      sound.volume(1.9);
     }, 4000);
     setTimeout(() => {
       sound.rate(1.6);
@@ -143,9 +141,11 @@ export default function App() {
     }, 10000);
     setTimeout(() => {
       sound.rate(0.65);
+      sound.volume(0.6);
     }, 10500);
     setTimeout(() => {
       sound.rate(0.5);
+      sound.volume(0.4);
       sound.stop();
       sound.play('end');
       sound.stop();
