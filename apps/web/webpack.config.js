@@ -28,4 +28,8 @@ module.exports = {
       // svgr: false
     }),
   ],
+  module: {
+    // rules: [{ test: /\.txt$/, use: 'raw-loader' }],
+    rules: [{ test: /\.mp3$/, loader: 'file-loader' }],
+  },
 };

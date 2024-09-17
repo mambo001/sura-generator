@@ -11,11 +11,13 @@ import {
   useTheme,
 } from '@mui/material';
 import type { WheelDataType } from 'react-custom-roulette';
+import ReactConfetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
+import useSound from 'use-sound';
 
 import { SpinWheel } from './components';
 import { generateRandomColor } from './utils';
-import ReactConfetti from 'react-confetti';
-import { useWindowSize } from 'react-use';
+import spinWheelSound from '../assets/audio/spin-wheel-sound.mp3';
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbye-vQ7rkXjBPc5I8yhQo9HQcwBnBDtIC9Wch6mortUj78RwINFQbdY2dJkQAiH9aoIkA/exec';
@@ -38,15 +40,24 @@ function RandomText(props: { options: string[]; interval: number }) {
     return () => clearInterval(intervalId);
   }, [selectRandomText, props.interval]);
 
-  return <Typography variant="h4">{newName}</Typography>;
+  return (
+    <Box
+      sx={{
+        height: 100,
+      }}
+    >
+      <Typography variant="h4">{newName}</Typography>
+    </Box>
+  );
 }
 
-export function App() {
+export default function App() {
   const { width, height } = useWindowSize();
   const [suraList, setSuraList] = useState<WheelDataType[]>();
   const [mustStartSpinning, setMustStartSpinning] = useState(false);
   const [selectedSura, setSelectedSura] = useState<number | null>(null);
   const theme = useTheme();
+  const [play] = useSound(spinWheelSound);
 
   useEffect(() => {
     fetch(API_URL)
@@ -71,6 +82,7 @@ export function App() {
 
   function handleSpinClick() {
     setMustStartSpinning(true);
+    play();
   }
 
   return (
@@ -83,14 +95,26 @@ export function App() {
         numberOfPieces={1000}
         hidden={mustStartSpinning}
       />
-      <Container>
+      <Container
+        sx={{
+          maxWidth: {
+            xs: '100%',
+            sm: '500px',
+            md: '600px',
+            lg: '600px',
+            xl: '600px',
+          },
+        }}
+      >
         <Card
           style={{
-            marginTop: '15vh',
+            marginTop: '13vh',
           }}
+          variant="outlined"
         >
           {suraList && suraList.length > 0 ? (
             <Stack gap={2} padding={2} alignItems={'center'}>
+              <h2>Generate a sura</h2>
               <Stack gap={2} padding={2} alignItems={'center'}>
                 <SpinWheel
                   options={suraList}
@@ -105,25 +129,21 @@ export function App() {
                   }}
                 />
                 {mustStartSpinning ? (
-                  // <Skeleton
-                  //   sx={{
-                  //     fontSize: 64,
-                  //   }}
-                  //   width={300}
-                  //   variant="text"
-                  // />
                   <RandomText
                     interval={10_000}
                     options={suraList.map((e) => String(e.option))}
                   />
                 ) : (
-                  // <Typography variant="h4">
-                  //   {suraList[randomOptionIndex].option}
-                  // </Typography>
                   selectedSura && (
-                    <Typography variant="h4">
-                      {suraList[selectedSura].option}
-                    </Typography>
+                    <Box
+                      sx={{
+                        height: 100,
+                      }}
+                    >
+                      <Typography variant="h4">
+                        {suraList[selectedSura].option}
+                      </Typography>
+                    </Box>
                   )
                 )}
               </Stack>
@@ -141,7 +161,6 @@ export function App() {
               sx={{
                 display: 'flex',
                 flex: 1,
-                // height: 300,
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: 2,
@@ -149,14 +168,19 @@ export function App() {
                 flexDirection: 'column',
               }}
             >
+              <Skeleton
+                variant="text"
+                width={300}
+                sx={{
+                  fontSize: 42,
+                }}
+              />
               <Skeleton variant="circular" width={300} height={300} />
-              <Skeleton variant="rectangular" width={300} height={40} />
+              <Skeleton variant="rectangular" width={'100%'} height={40} />
             </Box>
           )}
         </Card>
-      </Container>{' '}
+      </Container>
     </ThemeProvider>
   );
 }
-
-export default App;
