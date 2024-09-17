@@ -15,8 +15,8 @@ module.exports = {
       compiler: 'babel',
       main: './src/main.tsx',
       index: './src/index.html',
-      baseHref: '/sura-generator/',
-      // baseHref: '/',
+      baseHref:
+        process.env['NODE_ENV'] === 'production' ? '/sura-generator/' : '/',
       assets: ['./src/favicon.ico', './src/assets'],
       styles: ['./src/styles.css'],
       outputHashing: process.env['NODE_ENV'] === 'production' ? 'all' : 'none',
