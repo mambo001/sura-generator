@@ -38,6 +38,7 @@
     "@types/react-dom": "18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.0",
+    "@types/howler": "^2.2.11",
     "babel-jest": "^29.7.0",
     "eslint": "~8.57.0",
     "eslint-config-prettier": "^9.0.0",
@@ -68,6 +69,7 @@
     "react-custom-roulette": "1.4.0",
     "react-dom": "18.3.1",
     "react-use": "^17.5.1",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "use-sound": "^4.0.3"
   }
 }
