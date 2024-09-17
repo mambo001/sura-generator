@@ -13,7 +13,7 @@ import {
 import type { WheelDataType } from 'react-custom-roulette';
 import ReactConfetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
-import useSound from 'use-sound';
+import { Howl, Howler } from 'howler';
 
 import { SpinWheel } from './components';
 import { generateRandomColor } from './utils';
@@ -57,7 +57,100 @@ export default function App() {
   const [mustStartSpinning, setMustStartSpinning] = useState(false);
   const [selectedSura, setSelectedSura] = useState<number | null>(null);
   const theme = useTheme();
-  const [play] = useSound(spinWheelSound);
+  const sound = new Howl({
+    src: [spinWheelSound],
+    sprite: {
+      start: [0, 750, true],
+      mid: [150, 450, true],
+      end: [800, 1000, false],
+      full: [0, 1000, true],
+    },
+    html5: false,
+  });
+  // sound.duration(11000);
+  function handleSpinClick() {
+    setMustStartSpinning(true);
+    setTimeout(() => {
+      sound.play('start');
+      sound.rate(0.6);
+      sound.volume(0.5);
+    }, 1100);
+    setTimeout(() => {
+      sound.rate(0.75);
+      sound.volume(0.6);
+    }, 1300);
+    setTimeout(() => {
+      sound.rate(0.85);
+      sound.volume(0.7);
+    }, 1500);
+    setTimeout(() => {
+      sound.rate(0.95);
+      sound.volume(0.8);
+    }, 1700);
+    setTimeout(() => {
+      sound.rate(1);
+      sound.volume(1.05);
+    }, 1800);
+    setTimeout(() => {
+      sound.rate(1.2);
+      sound.volume(1);
+    }, 1900);
+    setTimeout(() => {
+      sound.rate(1.4);
+      sound.volume(1.2);
+    }, 2500);
+    setTimeout(() => {
+      sound.rate(1.6);
+      sound.volume(1.4);
+    }, 3000);
+    setTimeout(() => {
+      // sound.stop();
+      // sound.play('start');
+      sound.rate(1.8);
+      sound.volume(1.6);
+    }, 4000);
+    setTimeout(() => {
+      sound.rate(1.6);
+      sound.volume(1.8);
+    }, 5000);
+    setTimeout(() => {
+      sound.rate(1.4);
+      sound.volume(2);
+    }, 6000);
+    setTimeout(() => {
+      sound.rate(1.2);
+      sound.volume(1.8);
+    }, 7000);
+    setTimeout(() => {
+      sound.rate(1);
+      sound.volume(1.6);
+    }, 8000);
+    setTimeout(() => {
+      sound.rate(0.95);
+      sound.volume(1.4);
+    }, 8500);
+    setTimeout(() => {
+      sound.rate(0.85);
+      sound.volume(1.2);
+    }, 9000);
+    setTimeout(() => {
+      sound.rate(0.75);
+      sound.volume(1);
+    }, 9500);
+    setTimeout(() => {
+      sound.rate(0.7);
+      sound.volume(0.8);
+    }, 10000);
+    setTimeout(() => {
+      sound.rate(0.65);
+    }, 10500);
+    setTimeout(() => {
+      sound.rate(0.5);
+      sound.stop();
+      sound.play('end');
+      sound.stop();
+    }, 11000);
+  }
 
   useEffect(() => {
     fetch(API_URL)
@@ -79,11 +172,6 @@ export default function App() {
         setSuraList(suraList);
       });
   }, []);
-
-  function handleSpinClick() {
-    setMustStartSpinning(true);
-    play();
-  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -126,6 +214,8 @@ export default function App() {
                   onStopSpinning={(number) => {
                     setSelectedSura(number);
                     setMustStartSpinning(false);
+                    sound.stop();
+                    sound.loop(false);
                   }}
                 />
                 {mustStartSpinning ? (
